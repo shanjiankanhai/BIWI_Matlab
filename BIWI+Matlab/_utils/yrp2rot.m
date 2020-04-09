@@ -4,7 +4,7 @@ pitch = gt_angles(1);
 yaw   = gt_angles(2);
 roll  = gt_angles(3);
 
-% See [1] and [2] for rotational transformation
+% 
 
 rot_z = [cosd(roll),-sind(roll), 0;
          sind(roll), cosd(roll), 0;

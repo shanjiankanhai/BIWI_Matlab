@@ -16,18 +16,21 @@ for frame_id = 1:1:gt_data.nframes                % 三个参数分别是开始�
 
     disp(gt_data.fnames(frame_id,:)))
     
-    % first triplet is x,y,z head loc, See[1]
+    % 
     gt_data.gt_loc(:,frame_id)= fread(fid, 3,'float');     %操作矩阵，读取文件的前3个数据，存储到所有行的相应列
     
-    % second triplet is the pitch, yaw and roll angles, See[1]
+    % 
     gt_data.gt_ang(:,frame_id) = fread(fid, 3,'float');           %操作矩阵
     
     fclose(fid);
     
 end
 
+% 把角度和位置矩阵写入csv文件
+write_in_csv(dirs, gt_data, d_name)
+
 cd(dirs.w_dir);
 
-fprintf('[Info] Finished reading ground truth data from folder ID: %s\n',d_name)
+fprintf('[Info] 完成读取ground truth数据 ID: %s\n',d_name)
 
 

@@ -5,25 +5,25 @@
 #include <string>
 /**
  * Usage: [x,y,z] = mxReadDepthFile('frame_XXXXX_depth.bin',cam_intrinsic,zThresh);   三个参数，分别是深度数据文件、相机参数、
- * zThresh is the max Z val in mm. All point beyond zThresh，函数调用是通过文件名直接调用
- * are discarded.
+ * 函数调用是通过文件名直接调用
+ * 
  */
 
 using namespace std;
 void mexFunction (int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[])    // nlhs是输出参数数量，plhs指的是指向输出参数的指针，nrhs是输入参数数量
 {                                                                          // prhs[]是用来存储输入参数的数组
     /*-----------------------------------------------------------*/
-    /* Check the number of input arguments     检查输入参数，如果参数不足三个输出错误*/
+    /*    检查输入参数，如果参数不足三个输出错误*/
     if (nrhs != 3 )
         mexErrMsgTxt("Incorrect number of input arguments!");
     
-    /* Get the file name for the compressed depth image  从prhs中读取压缩深度图像的名字*/
+    /*   从prhs中读取压缩深度图像的名字*/
     char* fname = mxArrayToString(prhs[0]);                             //将mxArray转换为c、c++字符串，读取文件名
     
-    /* Read the intrinsic camera parameters         读取相机的固有参数*/              
+    /*          读取相机的固有参数*/              
 	double* depth_intrinsic = mxGetPr(prhs[1]);	
     
-    /* Open the compressed binary depth image       打开深度图像.bin文件*/
+    /*        打开深度图像.bin文件*/
  	FILE* pFile = fopen(fname, "rb");
 	if(!pFile)
     {
@@ -31,15 +31,15 @@ void mexFunction (int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[])    // nl
 		return;
 	}
     
-    /* Get the image width and height                  读取深度图像的宽度和高度*/
+    /*                 读取深度图像的宽度和高度*/
   	int im_width = 0; int im_height = 0;              //定义高度和宽度
  	fread(&im_width,sizeof(int),1,pFile);             // sizeof定义每次读取元素个数，读取宽度数据并存储
   	fread(&im_height,sizeof(int),1,pFile);            //读取高度数据并储存，到此处已经读取了2个sizeof
  
-    /* Storage for the depth data                     存储深度数据*/
+    /*                   存储深度数据*/
  	int16_t* depth_img = new int16_t[im_width * im_height];   //定义一个数组存储深度数据
 
-    /* Read the binary depth file                 读取二进制深度数据 */
+    /*                  读取二进制深度数据 */
  	int numempty;
  	int numfull;
  	int p = 0;
@@ -57,7 +57,7 @@ void mexFunction (int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[])    // nl
 	fclose(pFile);
     
     /*-----------------------------------------------------------*/
-    /* Get the 3D data from depth file */
+    /*     */
     plhs[0] = mxCreateDoubleMatrix(im_height,im_width,mxREAL);
     plhs[1] = mxCreateDoubleMatrix(im_height,im_width,mxREAL);
     plhs[2] = mxCreateDoubleMatrix(im_height,im_width,mxREAL);     //实现内存的申请，创建矩阵对象
@@ -71,11 +71,11 @@ void mexFunction (int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[])    // nl
 	{
         for(int x = 0; x < im_width; x++)
         {
-            // Indexing is according to row order format in C
+            // 
             float d = depth_img[y*im_width+x];
 			if ( d < g_max_z && d > 0 )
             {
-                // Indexing is according to col order format in Matlab
+                // 
 				X[x*im_height+y] = d * (float(x) - depth_intrinsic[2])/depth_intrinsic[0];
 				Y[x*im_height+y] = d * (float(y) - depth_intrinsic[5])/depth_intrinsic[4];
 				Z[x*im_height+y] = d;

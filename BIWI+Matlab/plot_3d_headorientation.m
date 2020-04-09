@@ -4,11 +4,11 @@ offset = -20;
 neutral_axes = [0; 0; offset]; % z-axes
 orientation = rot_mat* neutral_axes;
 
-% plot depth frame
+% 画出depth图像
 subplot(1,3,1)
 imagesc(pt_cld.z),daspect([1 1 1])
 
-% plot XY view of orientation
+% 画出xy角度
 subplot(1,3,2)
 plot3([0,orientation(1)],[0,orientation(2)],[0,orientation(3)],'-r',...
     'LineWidth',3), hold on 
