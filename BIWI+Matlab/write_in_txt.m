@@ -4,7 +4,7 @@ function write_in_txt(dirs,pt_cld，d_name,f_names,id)    %将矩阵数据写入
 
     t_name = f_names.depth(id,:)
 
-    [pathstr,name,ext,versn]=fileparts(t_name)   %把t_name分解，提取需要的文件名name
+    [~,name,~]=fileparts(t_name)   %把t_name分解，提取需要的文件名name
 
     filename = sprintf('%s.csv', name)
 

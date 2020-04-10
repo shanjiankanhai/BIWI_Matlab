@@ -40,5 +40,11 @@ if (dirs.position_dir == 0)
 end
 pause(0.3)
 
+dirs.cal_dir = uigetdir([],'选择存放相机校正参数的文件夹 cal');    %选择存放相机校正参数的文件夹cal
+if (dirs.cal_dir == 0)
+    return;
+end
+pause(0.3)
+
 addpath(dirs.w_dir);      %把工作文件夹添加进搜索路径
 disp('[Info] 所有文件夹载入完成')
