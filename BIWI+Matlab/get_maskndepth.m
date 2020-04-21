@@ -12,7 +12,7 @@ cd(d_name);
 pt_cld = struct;
 zThresh = 3.0;                
 
-%   读取点云数据
+%   读取点云数据 
 [pt_cld.x, pt_cld.y, pt_cld.z] = mxReadDepthFile(f_names.depth(frame_id,:), dep_intrinsic, zThresh);
 
 %      读取RGB图片
